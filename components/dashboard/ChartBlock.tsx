@@ -3,11 +3,18 @@
 import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 
+interface ChartData {
+  name: string;
+  value?: number;
+  uv?: number;
+  pv?: number;
+}
+
 interface ChartBlockProps {
   title: string;
-  type: "line" | "pie" | "bar";
-  data: any[];
-  loading?: boolean;
+  type: "line" | "bar" | "pie";
+  data: ChartData[];
+  loading: boolean;
 }
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#d0ed57"];

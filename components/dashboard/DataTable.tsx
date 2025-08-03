@@ -8,9 +8,16 @@ import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
+interface UserAnalytics {
+  Name: string;
+  Email: string;
+  "Signup Date": string;
+  Status: string;
+}
+
 interface DataTableProps {
-  data: any[];
-  loading?: boolean;
+  data: UserAnalytics[];
+  loading: boolean;
 }
 
 export function DataTable({ data, loading = false }: DataTableProps) {
