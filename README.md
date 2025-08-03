@@ -72,10 +72,12 @@ git push origin main
 ---
 
 ## 📂 Project Structure
-/app/page.tsx           # Dashboard entry
-/components/dashboard/  # Reusable dashboard components
-/components/ui/         # Shadcn UI components (button, table, skeleton...)
-/components/common/     # ClientOnly wrapper
+|Pages                   |Folders
+|------------------------|-----------------|
+|/app/page.tsx           |# Dashboard entry|
+|/components/dashboard/  |# Reusable dashboard components|
+|/components/ui/         |# Shadcn UI components (button, table, skeleton...)|
+|/components/common/     |# ClientOnly wrapper|
 
 ---
 
