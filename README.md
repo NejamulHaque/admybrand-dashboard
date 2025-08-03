@@ -1,36 +1,89 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Getting Start
+# 📊 ADmyBRAND Insights Dashboard
 
-First, run the development server:
+A modern, responsive, and real-time analytics dashboard for digital marketing agencies. Built with **Next.js 14 (App Router)**, **TypeScript**, and **shadcn/ui**.
+
+---
+
+## ✨ Features
+
+| Category         | Description |
+|------------------|-------------|
+| 📈 Analytics UI   | Overview cards, interactive charts (line, bar, pie), and exportable tables |
+| 🌓 Theming        | Dark/Light mode toggle using `Switch` component |
+| 📱 Responsive     | Mobile-first design, fully responsive |
+| 🔄 Real-time Data | Simulated chart updates every 3s using `setInterval()` |
+| 📤 Export Options | Export table to **PDF** (via jsPDF) or **CSV** (via react-csv) |
+| 📅 Date Filters   | Advanced filtering with `<DatePicker />` for start and end date |
+| 🧱 Reusable Components | Cards, ChartBlock, StatCard, DataTable |
+| 💀 Skeletons      | Beautiful loading states while fetching data |
+
+---
+
+## 🧩 Component Architecture
+
+| Component         | Role |
+|-------------------|------|
+| `ClientOnly`      | Prevents hydration mismatch between SSR and client rendering |
+| `ChartBlock`      | Unified chart component (pie, bar, line) using `recharts` |
+| `StatCard`        | Compact KPI cards with loading skeleton support |
+| `DataTable`       | Paginated, sortable table with export (CSV/PDF) |
+| `DatePicker`      | Custom calendar picker using `react-day-picker` |
+| `Calendar`        | Tailwind-styled wrapper for `react-day-picker` |
+| `Skeleton`        | Used across cards, charts, and tables for placeholder loading |
+
+---
+
+## 📦 Tech Stack
+
+- [Next.js 14+ (App Router)](https://nextjs.org/docs)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Recharts](https://recharts.org/)
+- [jsPDF](https://github.com/parallax/jsPDF) & `jspdf-autotable`
+- [react-csv](https://github.com/react-csv/react-csv)
+- [react-day-picker](https://react-day-picker.js.org/)
+
+---
+
+## 🚀 Getting Started
 
 ```bash
+git clone https://github.com/your-username/admybrand-dashboard.git
+cd admybrand-dashboard
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌐 Deployment
+This project is optimized for deployment on Vercel.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To deploy:
+```bash
+# First push to GitHub:
+git push origin main
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Then connect your repo to Vercel and deploy!
+```
+---
 
-## Learn More
+## 📂 Project Structure
+/app/page.tsx           # Dashboard entry
+/components/dashboard/  # Reusable dashboard components
+/components/ui/         # Shadcn UI components (button, table, skeleton...)
+/components/common/     # ClientOnly wrapper
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📸 Preview
+https://admybrand-dashboard-six.vercel.app/
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛡 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT © 2025 Nejamul Haque
