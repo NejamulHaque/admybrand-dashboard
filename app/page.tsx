@@ -1,4 +1,3 @@
-// Dashboard with Real-Time Updates, Export to CSV/PDF, and Date Filters
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -11,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { CSVLink } from "react-csv";
 
 const initialLineData = [
   { name: "Jan", value: 400 },
@@ -39,6 +39,15 @@ export default function DashboardPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [lineData, setLineData] = useState(initialLineData);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const csvData = [...Array(10)].map((_, i) => ({
+    Name: `User ${i + 1}`,
+    Email: `user${i + 1}@example.com`,
+    "Signup Date": format(new Date(), "dd/MM/yyyy"),
+    Status: i % 2 === 0 ? "Active" : "Inactive",
+  }));
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -58,18 +67,13 @@ export default function DashboardPage() {
     autoTable(doc, {
       startY: 20,
       head: [["Name", "Email", "Signup Date", "Status"]],
-      body: [...Array(10)].map((_, i) => [
-        `User ${i + 1}`,
-        `user${i + 1}@example.com`,
-        format(new Date(), "dd/MM/yyyy"),
-        i % 2 === 0 ? "Active" : "Inactive",
-      ]),
+      body: csvData.map(row => Object.values(row)),
     });
     doc.save("user_analytics.pdf");
   };
 
   const mockStats = [
-    { label: "Revenue", value: "₹120K" },
+    { label: "Revenue", value: "$120K" },
     { label: "Users", value: "4.5K" },
     { label: "Conversions", value: "980" },
     { label: "Growth", value: "+12.4%" },
@@ -108,46 +112,52 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         <div className="bg-background p-4 rounded-xl shadow">
           <h2 className="text-lg font-semibold mb-2">Monthly Growth</h2>
-          <LineChart width={300} height={200} data={lineData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
+          {loading ? <Skeleton className="h-[200px] w-full" /> : (
+            <LineChart width={300} height={200} data={lineData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          )}
         </div>
 
         <div className="bg-background p-4 rounded-xl shadow">
           <h2 className="text-lg font-semibold mb-2">Marketing Channels</h2>
-          <PieChart width={300} height={200}>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-              label
-            >
-              {pieData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+          {loading ? <Skeleton className="h-[200px] w-full" /> : (
+            <PieChart width={300} height={200}>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                fill="#8884d8"
+                label
+              >
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          )}
         </div>
 
         <div className="bg-background p-4 rounded-xl shadow">
           <h2 className="text-lg font-semibold mb-2">Weekly Performance</h2>
-          <BarChart width={300} height={200} data={barData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="uv" fill="#8884d8" />
-            <Bar dataKey="pv" fill="#82ca9d" />
-          </BarChart>
+          {loading ? <Skeleton className="h-[200px] w-full" /> : (
+            <BarChart width={300} height={200} data={barData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="uv" fill="#8884d8" />
+              <Bar dataKey="pv" fill="#82ca9d" />
+            </BarChart>
+          )}
         </div>
       </div>
 
@@ -155,29 +165,38 @@ export default function DashboardPage() {
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">User Analytics</h2>
-          <Button onClick={handleExportPDF}>Export to PDF</Button>
+          <div className="flex gap-2">
+            <Button onClick={handleExportPDF}>Export PDF</Button>
+            <CSVLink data={csvData} filename="user_analytics.csv">
+              <Button variant="outline">Export CSV</Button>
+            </CSVLink>
+          </div>
         </div>
         <div className="overflow-auto rounded-xl shadow">
-                      <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Signup Date</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {[...Array(10)].map((_, i) => (
-                  <TableRow key={i}>
-                    <TableCell>User {i + 1}</TableCell>
-                    <TableCell>user{i + 1}@example.com</TableCell>
-                    <TableCell>{format(new Date(), "dd/MM/yyyy")}</TableCell>
-                    <TableCell>{i % 2 === 0 ? "Active" : "Inactive"}</TableCell>
-                  </TableRow>
+          {loading ? (
+            <Skeleton className="h-48 w-full" />
+          ) : (
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Name</Th>
+                  <Th>Email</Th>
+                  <Th>Signup Date</Th>
+                  <Th>Status</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {csvData.map((user, i) => (
+                  <Tr key={i}>
+                    <Td>{user.Name}</Td>
+                    <Td>{user.Email}</Td>
+                    <Td>{user["Signup Date"]}</Td>
+                    <Td>{user.Status}</Td>
+                  </Tr>
                 ))}
-              </TableBody>
+              </Tbody>
             </Table>
+          )}
         </div>
       </div>
     </div>
